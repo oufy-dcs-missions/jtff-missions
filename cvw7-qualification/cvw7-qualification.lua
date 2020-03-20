@@ -272,11 +272,11 @@ menuRaidBomber = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Reset Bombard
 menuSu33_BVR = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Su 33", MenuBVRBlue, ActivateBVR, {spawnBVR33, "Su-33"} )
 menuSu27_BVR = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Su 27", MenuBVRBlue, ActivateBVR, {spawnBVR27, "Su-27"} )
 menuMig29_BVR = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Mig 29S", MenuBVRBlue, ActivateBVR, {spawnBVR29, "Mig-29S"} )
-menuKillAllBVRPlanes = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "sweep de la zone BVR", MenuBVRBlue, fctKillSpawnObjectArray, {{spawnBVR33, spawnBVR27, spawnBVR29}, "Zone BVR d�gag�e !!"})
+menuKillAllBVRPlanes = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "sweep de la zone BVR", MenuBVRBlue, fctKillSpawnObjectArray, {{spawnBVR33, spawnBVR27, spawnBVR29}, "Zone BVR dégagée !!"})
 -- Menus WVR
 local MenuWVRBlue = MENU_COALITION:New( coalition.side.BLUE, "BFM Blue" )
 menuSu27_WVR = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "Su 27", MenuWVRBlue, ActivateWVR, {spawnbandit, "Su-27"} )
-menuKillAllWVRPlanes = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "sweep de la zone BFM", MenuWVRBlue, fctKillSpawnObjectArray, {{spawnbandit}, "Zone BFM d�gag�e !!"})
+menuKillAllWVRPlanes = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "sweep de la zone BFM", MenuWVRBlue, fctKillSpawnObjectArray, {{spawnbandit}, "Zone BFM dégagée !!"})
 -- Menu A/G
 local MenuAGBlue = MENU_COALITION:New( coalition.side.BLUE, "A/G Blue" )
 menuSA3On = MENU_COALITION_COMMAND:New( coalition.side.BLUE, "SA3 Actif", MenuAGBlue, fctActivateSAM, {"SeadTraining", false, 45} )
