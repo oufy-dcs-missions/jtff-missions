@@ -43,3 +43,5 @@ luac.out
 .buildpath
 .project
 .settings/
+**/*.iml
+**/.idea/
