@@ -27,7 +27,22 @@ function fctSuspendSAM(param)
         end
     end
 end
-
+function fctActivateMultipleSAMs(param)
+    local SAMList = param[1]
+    local blnSilent = param[2] or false
+    local intMessageTempo = param[3] or 45
+    for SAM in pairs(SAMList) do
+        fctActivateSAM({SAM, blnSilent, intMessageTempo})
+    end
+end
+function fctSuspendMultipleSAM(param)
+    local SAMList = param[1]
+    local blnSilent = param[2] or false
+    local intMessageTempo = param[3] or 45
+    for SAM in pairs(SAMList) do
+        fctSuspendSAM({SAM, blnSilent, intMessageTempo})
+    end
+end
 --
 -- Sound Objects
 --
@@ -41,6 +56,7 @@ end
 do
     menuVFA314 = MENU_COALITION:New(coalition.side.BLUE, "Simulation VFA-314")
     menuHQ7 = MENU_COALITION:New(coalition.side.BLUE, "HQ7s", menuVFA314 )
+    menuAll = MENU_COALITION:New(coalition.side.BLUE, "All", menuVFA314 )
     menuVFA314_SA2_OFF = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "SA2-Off", menuVFA314,fctSuspendSAM,{"SA2-Karma"})
     menuVFA314_SA2_ON = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "SA2-On", menuVFA314,fctActivateSAM,{"SA2-Karma"})
     menuVFA314_SA8_OFF = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "SA8-Off", menuVFA314,fctSuspendSAM,{"SA8-Karma"})
@@ -53,4 +69,6 @@ do
     menuVFA314_HQ7_W_ON = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "HQ7 West On", menuHQ7,fctActivateSAM,{"HQ7-Karma-West"})
     menuVFA314_HQ7_S_OFF = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "HQ7 South Off", menuHQ7,fctSuspendSAM,{"HQ7-Karma-South"})
     menuVFA314_HQ7_S_ON = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "HQ7 South On", menuHQ7,fctActivateSAM,{"HQ7-Karma-South"})
+    menuVFA314_All_OFF = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "ALL SA Off", menuAll,fctSuspendMultipleSAM,{{"SA2-Karma","SA8-Karma","SA11-Karma","HQ7-Karma-East","HQ7-Karma-West","HQ7-Karma-South"}})
+    menuVFA314_All_ON = MENU_COALITION_COMMAND:New(coalition.side.BLUE, "ALL SA On", menuAll,fctActivateMultipleSAMs,{{"SA2-Karma","SA8-Karma","SA11-Karma","HQ7-Karma-East","HQ7-Karma-West","HQ7-Karma-South"}})
 end
