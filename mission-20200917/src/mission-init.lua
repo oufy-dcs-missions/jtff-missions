@@ -73,11 +73,10 @@ if airboss_enable == true then
     airbossCVN:SetPatrolAdInfinitum(false)
     airbossCVN:SetCarrierControlledArea(50)
     airbossCVN:SetStaticWeather(true)
-    airbossCVN:SetMenuSingleCarrier()
     airbossCVN:SetRecoveryCase(3)
     airbossCVN:SetMaxLandingPattern(5)
     airbossCVN:SetDefaultPlayerSkill(AIRBOSS.Difficulty.NORMAL) -- other options EASY / HARD
-    airbossCVN:SetHandleAIOFF()
+    airbossCVN:SetHandleAION()
     airbossCVN:SetMenuRecovery(30, 20, true)
     airbossCVN:SetMenuMarkZones(airboss_enable_markzones)
     airbossCVN:SetMenuSmokeZones(airboss_enable_smokezones)
@@ -90,7 +89,7 @@ if airboss_enable == true then
     --airbossCVN:SetAutoSave(nil, "Greenie Board.csv")
 
     -- create fake recovery window at the end of the mission play
-    local window1 = airbossCVN:AddRecoveryWindow("19:45", "21:30", 3, 30, true)
+    local window1 = airbossCVN:AddRecoveryWindow("19:45", "21:30", 3, 30, true, 20, false)
 
     airbossCVN:Start()
 

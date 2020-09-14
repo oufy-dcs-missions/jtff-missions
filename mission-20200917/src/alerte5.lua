@@ -18,6 +18,6 @@ timer.scheduleFunction(function()
                 AICapZone:__Start( 1 )
             end
     ):InitLimit(2,6):InitGrouping(2):InitRepeatOnEngineShutDown():InitSkill("Excellent"):InitAirbase(CVNAirbase, SPAWN.Takeoff.Cold)
-    SpawnPatrol:SpawnAtAirbase(CVNAirbase,GROUP.Takeoff.Cold)
-    SpawnPatrol:SpawnAtAirbase(CVNAirbase,GROUP.Takeoff.Cold)
+    SpawnPatrol:SpawnAtAirbase(CVNAirbase,GROUP.Takeoff.Cold):OptionROEOpenFireWeaponFree():OptionAlarmStateRed()
+    SpawnPatrol:SpawnAtAirbase(CVNAirbase,GROUP.Takeoff.Cold):OptionROEOpenFireWeaponFree():OptionAlarmStateRed()
 end, {}, timer.getTime() + 2*60)

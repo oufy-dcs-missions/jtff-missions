@@ -1,6 +1,12 @@
 function smokeBlue(planeUnit)
     planeUnit:F2()
     trigger.action.smoke( planeUnit:GetVec3(), trigger.smokeColor.Blue )
+    trigger.action.signalFlare(planeUnit:GetVec3(), trigger.flareColor.Red, 0)
+    trigger.action.signalFlare(planeUnit:GetVec3(), trigger.flareColor.Red, 5)
+    trigger.action.signalFlare(planeUnit:GetVec3(), trigger.flareColor.Red, 10)
+    trigger.action.signalFlare(planeUnit:GetVec3(), trigger.flareColor.Red, 15)
+    trigger.action.signalFlare(planeUnit:GetVec3(), trigger.flareColor.Red, 20)
+    
 end
 
 vodooGroup = GROUP:FindByName("Voodoo-1")
