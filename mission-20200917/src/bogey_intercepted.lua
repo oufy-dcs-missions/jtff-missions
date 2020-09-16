@@ -11,7 +11,7 @@ end
 
 vodooGroup = GROUP:FindByName("Voodoo-1")
 hornetTest = GROUP:FindByName("hornet-test-1")
-linerIntercepted = MESSAGE:New("OverLord , Voodoo,\nAvons intercepté le bogey. Il s'agit d'un liner visiblement radio HS.\nLe contact nous suit en direction de Gudauta pour inspection et réparation",60,nil,false )
+linerIntercepted = MESSAGE:New("OverLord , Voodoo,\nAvons intercepté le bogey. Il s'agit d'un liner visiblement radio HS.\nLe contact semble coopérant, demandons instructions.",60,nil,false )
 if vodooGroup then
     linerIntercepted:ToGroup(vodooGroup)
 end
@@ -21,6 +21,8 @@ end
 
 linerStatus:Set(0)
 
-bogey = GROUP:FindByName("liner civil")
-bogey:RouteRTB(AIRBASE:FindByName(AIRBASE.Caucasus.Gudauta), 330)
-bogey:OptionROEHoldFire():OptionAlarmStateGreen()
+bogeyGroup = GROUP:FindByName("liner civil")
+bogeyUnit = UNIT:FindByName("liner civil-1")
+bogeyGroup:RouteRTB(AIRBASE:FindByName(AIRBASE.Caucasus.Gudauta), bogeyGroup:GetSpeedMax())
+bogeyGroup:OptionROEHoldFire():OptionAlarmStateGreen()
+smokeBlue(bogeyUnit)

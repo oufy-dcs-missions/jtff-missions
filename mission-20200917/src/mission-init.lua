@@ -4,6 +4,14 @@ linerStatus:Set(1)
 russiaAlarmState = USERFLAG:New("20")
 russiaAlarmState:Set(0)
 
+cargoFainaLocalise = USERFLAG:New("40")
+cargoFainaLocalise:Set(0)
+
+moskvaGroup = GROUP:FindByName("Moskva")
+--moskvaUnit = UNIT:FindByName("moskva")
+--moskvaoriginalRoute = moskvaGroup:GetTaskRoute()
+
+
 
 -- ---------------------------------------------------------------------------
 --Skynet IADS Settings
@@ -157,9 +165,9 @@ end
 -- ---------------------------------------------------------------------------
 --RAT
 -- ---------------------------------------------------------------------------
-RAT_A320_AirFrance = RAT:New("A320-Airfrance")
-RAT_A320_Aeroflot = RAT:New("A320-Aeroflot")
-RAT_A380_China = RAT:New("A380-China")
+RAT_A320_AirFrance = RAT:New("A320-Airfrance"):StatusReports(false)
+RAT_A320_Aeroflot = RAT:New("A320-Aeroflot"):StatusReports(false)
+RAT_A380_China = RAT:New("A380-China"):StatusReports(false)
 RAT_A380_China:SetTakeoffAir()
 RAT_A380_China:SetDeparture({"RAT_Ukraine" , "RAT_Europe" , "RAT_Russia", "RAT_UAE"})
 RAT_A320_AirFrance:SetDestination("RAT_France")
@@ -177,6 +185,7 @@ RAT_A380_China:SetDestination({AIRBASE.Caucasus.Krasnodar_Center ,
                                   AIRBASE.Caucasus.Sochi_Adler,
                                   AIRBASE.Caucasus.Batumi,
                                   AIRBASE.Caucasus.Sukhumi_Babushara})
+
 RAT_A320_AirFrance:Invisible():Spawn(2)
 RAT_A320_Aeroflot:Invisible():Spawn(3)
 RAT_A380_China:Invisible():Spawn(1)
