@@ -1,0 +1,40 @@
+Vols au planing:
+Voodoo : décollage 1810L pour une BARCAP au sud du groupe Aéronaval. RTB pour 1930L. Assurez la sécurité aérienne dans le sud du porte-avions sur guidage par Overlord/Silver1
+
+Victory : décollage 1820L pour reconnaissance de la zone de sinistre du Faina. Overlord/Silver1 vous donnera les instructions une fois sur zone (WP2).
+
+Vandetta : décollage 1815L pour une CAP en couverture du groupe Victory. Monitorez l’activité sur la zone autour du Bullseye et couvrez la patrouille Victory en liaison avec Overlord/Silver1
+
+ROE : WEAPONS HOLD
+
+Commandement tactique : Transféré à OverLord de 1800L à 2200L
+
+
+CVN-71 : Roosevelt
+TCN : 71X
+ICLS: 11
+Freq Control: Black1
+Freq Marshall : Black2
+Freq LSO : Black3
+
+S-3B : Texaco
+TCN : 51Y
+Freq : Olive1
+
+E-2D : Overlord
+Freq : Silver1
+TCN : 50Y
+
+
+Plans de vol :
+Vandetta : F14B
+WP1 Bulls
+
+Voodoo : F14B
+WP1 Anchor East
+WP2 Anchor West
+WP3 Bulls
+
+Victory : F14B
+WP1 Bulls
+WP2 Début de recherche Faina
