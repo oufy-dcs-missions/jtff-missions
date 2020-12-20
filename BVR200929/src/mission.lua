@@ -127,7 +127,8 @@ arrSpanwFox1 = {
 }
 arrSpanwFox3 = {
     SPAWN:New("BVRIAFox3-1"),
-    SPAWN:New("BVRIAFox3-2")
+    SPAWN:New("BVRIAFox3-2"),
+	SPAWN:New("BVRIAFox3-3")
 }
 
 -- *****************************************************************************
