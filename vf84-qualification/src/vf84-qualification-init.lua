@@ -246,7 +246,7 @@ groupTexaco:GetUnit(1):GetBeacon():AATACAN(15, "TXC", true)
 -- *****************************************************************************
 --                     **                 bomber Raid                         **
 --                     *********************************************************
-groupbomber = spawnbomber:InitSkill("Excellent"):InitUnControlled():Spawn()
+groupbomber = spawnbomber:InitSkill("Excellent"):InitUnControlled():InitRepeatOnEngineShutDown():Spawn()
 ScheduleIDGroupbomber = Scheduler:Schedule(nil, startUncontrolledAirGroup, { groupbomber }, 600, 20 )
 -- *****************************************************************************
 --                     **                 AG training                         **
