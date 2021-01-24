@@ -1,0 +1,33 @@
+CVN71
+  TCN 71X
+  ICLS 11
+  Freq :
+    TOWER :		Black1
+  Airboss
+    MARSHALL :	Black2
+	LSO :		Black3
+
+CVN73
+  TCN 73X
+  ICLS 13
+  Freq :
+    TOWER :		128.000
+  Airboss
+	MARSHALL :	252.250
+	LSO :		127.000
+
+Arco S3
+  TCN 50Y
+  Freq Olive1
+
+Shell S3
+  TCN 51Y
+  Freq Olive2
+
+Magic E2
+  TCN 30Y
+  Freq Silver1
+
+Darkstar E2
+  TCN 31Y
+  Freq Silver2
