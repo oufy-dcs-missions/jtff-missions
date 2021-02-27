@@ -1,0 +1,23 @@
+GroundOps :
+  - Incirlik: piste 05 - VFR Sud
+    TCN:		21X
+	freq:		Olive3
+
+NavalOps :
+  - Washington:
+    TCN:		73X
+	ICLS:		13
+	freq:		Black1
+	Airboss:
+	  Marshall:	Black4
+	  LSO:		Black3
+
+Tankers :
+  - Texaco: S3-Viking
+    TCN:		14Y
+	freq:		Olive1
+
+AWACS :
+  - Overlord: E2-C
+    TCN:		17Y
+	freq:		Silver1
