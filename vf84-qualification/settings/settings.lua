@@ -290,7 +290,7 @@ TankersConfig = {
             channel = 15,
             morse = 'TEX',
         },
-        freq = 264,
+        freq = 317.500,
         fuelwarninglevel = 20,
         racetrack = {
             front = 45,

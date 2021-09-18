@@ -5,7 +5,7 @@ airboss_enable = true
 
 airboss_enable_markzones = true
 
-airboss_enable_smokezones = false
+airboss_enable_smokezones = true
 
 airboss_enable_niceguy = false
 
@@ -23,8 +23,8 @@ if airboss_enable == true then
     airbossCVN = AIRBOSS:New("roosevelt", "roosevelt")
     airbossCVN:SetTACAN(71, "X", "RSV")
     airbossCVN:SetICLS(11, "RSVLSO")
-    airbossCVN:SetLSORadio(126.5)
-    airbossCVN:SetMarshalRadio(251.75)
+    airbossCVN:SetLSORadio(127.3)
+    airbossCVN:SetMarshalRadio(127.5)
     airbossCVN:SetPatrolAdInfinitum(false)
     airbossCVN:SetCarrierControlledArea(50)
     airbossCVN:SetStaticWeather(true)
