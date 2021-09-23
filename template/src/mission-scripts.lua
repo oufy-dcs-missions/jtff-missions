@@ -192,7 +192,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             local player_wire = playerData.wire
 
             player_name = player_name:gsub('[%p]', '')
-
+            local client_performing_sh = USERFLAG:New(UNIT:FindByName(unit_name):GetClient():GetClientGroupID() + 100000000)
             --local gradeForFile
             if  string_grade == "_OK_" then
                 --if  string_grade == "_OK_" and player_wire == "3" and player_Tgroove >=15 and player_Tgroove <19 then
@@ -201,10 +201,10 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                     myGrade.grade = "_OK_<SH>"
                     myGrade.points = myGrade.points
                     client_performing_sh:Set(0)
-                    self:SetTrapSheet(nil, "SH_unicorn_AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "SH_unicorn_AIRBOSS-trapsheet-"..player_name)
                     --timer.scheduleFunction(underlinePassSH, {}, timer.getTime() + 5)
                 else
-                    self:SetTrapSheet(nil, "unicorn_AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "unicorn_AIRBOSS-trapsheet-"..player_name)
                 end
 
             elseif string_grade == "OK" and player_wire >1 then
@@ -212,20 +212,20 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                     myGrade.grade = "OK<SH>"
                     myGrade.points = myGrade.points + 0.5
                     client_performing_sh:Set(0)
-                    self:SetTrapSheet(nil, "SH_AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "SH_AIRBOSS-trapsheet-"..player_name)
                 else
-                    self:SetTrapSheet(nil, "AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "AIRBOSS-trapsheet-"..player_name)
                 end
 
             elseif string_grade == "(OK)" and player_wire >1 then
-                self:SetTrapSheet(nil, "AIRBOSS-trapsheet-"..player_name)
+                self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "AIRBOSS-trapsheet-"..player_name)
                 if client_performing_sh:Get() == 1 then
                     myGrade.grade = "(OK)<SH>"
                     myGrade.points = myGrade.points + 1.00
                     client_performing_sh:Set(0)
-                    self:SetTrapSheet(nil, "SH_AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "SH_AIRBOSS-trapsheet-"..player_name)
                 else
-                    self:SetTrapSheet(nil, "AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "AIRBOSS-trapsheet-"..player_name)
                 end
 
             elseif string_grade == "--" and player_wire >1 then
@@ -233,9 +233,9 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                     myGrade.grade = "--<SH>"
                     myGrade.points = myGrade.points + 1.00
                     client_performing_sh:Set(0)
-                    self:SetTrapSheet(nil, "SH_AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "SH_AIRBOSS-trapsheet-"..player_name)
                 else
-                    self:SetTrapSheet(nil, "AIRBOSS-trapsheet-"..player_name)
+                    self:SetTrapSheet(self.customconfig.operationstrapsheetpath, "AIRBOSS-trapsheet-"..player_name)
                 end
 
             end
@@ -248,7 +248,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 local onewire_to_discord = ('**'..player_name..' almost had a rampstrike with that 1-wire!**')
                 HypeMan.sendBotMessage(onewire_to_discord)
             end
-            self:_SaveTrapSheet(playerData, mygrade)
+            self:_SaveTrapSheet(playerData, myGrade)
             HypeMan.sendBotTable(myGrade)
 
             --TODO reactivate the timer.schedule maybe ?

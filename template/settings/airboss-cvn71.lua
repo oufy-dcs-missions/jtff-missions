@@ -19,12 +19,12 @@ AirBossConfig = {
             morse = 'RSVLSO',
         },
         freq = {
-            base = 127.4,
+            base = 127.3,
             marshall = 127.5,
-            lso = 127.3
+            lso = 127.4
         },
         infintepatrol = true,
-        controlarea = 50,
+        controlarea = 65,
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
@@ -42,8 +42,8 @@ AirBossConfig = {
         },
         singlecarrier = true,
         event_duration_minutes = 90,
-        operationsstatspath = "C:\\airboss-stats",
-        operationstrapsheetpath = "C:\\airboss-trapsheets"
+        operationsstatspath = "C:/airboss-stats",
+        operationstrapsheetpath = "C:/airboss-trapsheets"
     }
 }
 

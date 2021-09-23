@@ -3,4 +3,4 @@
 --- Created by oufy.
 --- DateTime: 18/09/2021 15:45
 ---
-hypemanInstallPath = "D:\\lua\\hypeman-jtff-airboss\\src"
+hypemanInstallPath = "C:/hypeman-jtff-airboss/src"
