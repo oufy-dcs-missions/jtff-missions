@@ -142,8 +142,8 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         if airbossconfig.recoverytanker then
             for index,value in pairs(tankersArray) do
                 if ((value.customconfig.airboss_recovery == true) and (value.customconfig.groupName == airbossconfig.recoverytanker))then
-                    --trigger.action.outText('Recovery Tanker configured : '..airbossconfig.recoverytanker, 10)
                     objAirboss:SetRecoveryTanker(tankersArray[index])
+                    trigger.action.outText('Recovery Tanker configured : '..airbossconfig.recoverytanker, 30)
                     break
                 end
             end
