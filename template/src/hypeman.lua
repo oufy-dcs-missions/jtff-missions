@@ -193,7 +193,7 @@ local function HypeManMissionEndHandler(event)
 
         local theTimeString  = dayStr .. DHMS.h .. ' hours and ' .. DHMS.m .. ' minutes.'
 
-        HypeMan.sendBotMessage('$SERVERNAME\' missions si ending, mission ran for ' .. theTimeString .. '  You all can go watch TOPGUN again.');
+        HypeMan.sendBotMessage('$SERVERNAME mission is ending, mission ran for ' .. theTimeString .. '  You all can go watch TOPGUN again.');
     end
 end
 
