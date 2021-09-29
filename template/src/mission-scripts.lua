@@ -166,6 +166,9 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         if airbossconfig.singlecarrier == true then
             objAirboss:SetMenuSingleCarrier()
         end
+        if not(airbossconfig.event_duration_minutes) then
+            airbossconfig.event_duration_minutes = 60
+        end
         objAirboss.customconfig = airbossconfig
         --airbossCVN:Load(nil, "Greenie Board.csv")
         --airbossCVN:SetAutoSave(nil, "Greenie Board.csv")
@@ -265,7 +268,35 @@ for index, airbossconfig in ipairs(AirBossConfig) do
 
         function objAirboss:OnAfterRecoveryStop(From, Event, To)
             trigger.action.outText(self.customconfig.carriername..': Recovery finished.', 30)
-            if self.customconfig.event_duration_minutes then
+            if self.recoverywindow then
+                if ((timer.getAbsTime() + UTILS.Round(self.customconfig.event_duration_minutes*60/2, 0) > self.recoverywindow.STOP)
+                        or (timer.getAbsTime() + self.customconfig.event_duration_minutes*60 < self.recoverywindow.START)) then
+                    if ((timer.getAbsTime() + self.customconfig.event_duration_minutes*60) >= (self:GetCoordinate():GetSunset(true) - 30*60)) then
+                        trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
+                        self:SetRecoveryCase(3)
+                        self:SetMaxSectionSize(1)
+                    else
+                        if ((timer.getAbsTime() + UTILS.Round(self.customconfig.event_duration_minutes*60/2, 0)) >= (self:GetCoordinate():GetSunrise(true) + 30*60)) then
+                            self:SetRecoveryCase(self.customconfig.recoverycase)
+                            if self.customconfig.recoverycase == 3 then
+                                self:SetMaxSectionSize(1)
+                            else
+                                self:SetMaxSectionSize(4)
+                            end
+                        end
+                    end
+                    self:AddRecoveryWindow(
+                            UTILS.Round(self.customconfig.event_duration_minutes*60/2, 0),
+                            self.customconfig.event_duration_minutes*60,
+                            self.defaultcase,
+                            self.customconfig.menurecovery.offset,
+                            self.customconfig.menurecovery.windondeck,
+                            self.customconfig.menurecovery.uturn
+                    )
+                    trigger.action.outText(self.customconfig.carriername..': Next Recovery in : '..UTILS.Round(self.customconfig.event_duration_minutes/2, 0)..' minutes', 30)
+                    --LeaveRecovery(self)
+                end
+            else
                 if ((timer.getAbsTime() + self.customconfig.event_duration_minutes*60) >= (self:GetCoordinate():GetSunset(true) - 30*60)) then
                     trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
                     self:SetRecoveryCase(3)
@@ -289,30 +320,8 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                         self.customconfig.menurecovery.uturn
                 )
                 trigger.action.outText(self.customconfig.carriername..': Next Recovery in : '..UTILS.Round(self.customconfig.event_duration_minutes/2, 0)..' minutes', 30)
-            else
-                if ((timer.getAbsTime() + 60*60) >= (self:GetCoordinate():GetSunset(true) -30*60)) then
-                    trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
-                    self:SetRecoveryCase(3)
-                    self:SetMaxSectionSize(1)
-                else
-                    if ((timer.getAbsTime() + 25*60) >= (self:GetCoordinate():GetSunrise(true) + 30*60)) then
-                        self:SetRecoveryCase(self.customconfig.recoverycase)
-                        if self.customconfig.recoverycase == 3 then
-                            self:SetMaxSectionSize(1)
-                        else
-                            self:SetMaxSectionSize(4)
-                        end
-                    end
-                end
-                self:AddRecoveryWindow(25*60, 60*60,
-                        self.defaultcase,
-                        self.customconfig.menurecovery.offset,
-                        self.customconfig.menurecovery.windondeck,
-                        self.customconfig.menurecovery.uturn
-                )
-                trigger.action.outText(self.customconfig.carriername..': Next Recovery in : 25 minutes', 30)
+                --LeaveRecovery(self)
             end
-            --LeaveRecovery(self)
         end
 
         AIRBOSSArray[compteur] = objAirboss
@@ -322,115 +331,81 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 AIRBOSSArray[compteur].carrier:GetGroup(),
                 1111)
         AIRBOSSArray[compteur].BlueCVNClients = SET_CLIENT:New()
-                :FilterCoalitions(AIRBOSSArray[compteur].coalition)
-                :FilterStart()
-        AIRBOSSArray[compteur].scheduler, AIRBOSSArray[compteur].schedulerID = SCHEDULER:New(
-                nil,
-                function ()
-                    local clientData={}
-                    local player_name
+                                                          :FilterCoalitions(AIRBOSSArray[compteur].coalition)
+                                                          :FilterStart()
+        --AIRBOSSArray[compteur].scheduler, AIRBOSSArray[compteur].schedulerID = SCHEDULER:New(
+        --        nil,
+        --        function ()
+        --            local clientData={}
+        --            local player_name=""
+        --
+        --            (AIRBOSSArray[compteur].BlueCVNClients):ForEachClientInZone( AIRBOSSArray[compteur].CVN_GROUPZone,
+        --                    function( MooseClient )
+        --
+        --                        local function resetFlag()
+        --                            --trigger.action.outText('RESET SH Pass FLAG)', 5 )
+        --                            client_in_zone_flag:Set(0)
+        --                        end
+        --
+        --                        local player_velocity = MooseClient:GetVelocityKNOTS()
+        --                        local player_name = MooseClient:GetPlayerName()
+        --                        local player_alt = MooseClient:GetAltitude()
+        --                        local player_type = MooseClient:GetTypeName()
+        --
+        --                        player_alt_feet = player_alt * 3.28
+        --                        player_alt_feet = player_alt_feet/10
+        --                        player_alt_feet = math.floor(player_alt_feet)*10
+        --
+        --                        player_velocity_round = player_velocity/10
+        --                        player_velocity_round = math.floor(player_velocity_round)*10
+        --
+        --                        local Play_SH_Sound = USERSOUND:New( "AIRBOSS/Airboss Soundfiles/GreatBallsOfFire.ogg" )
+        --                        trigger.action.outText(player_name..' altitude is '..player_alt, 5)
+        --                        trigger.action.outText(player_name..' speed is '..player_velocity, 5)
+        --                        if client_in_zone_flag == nil then
+        --                            client_in_zone_flag = USERFLAG:New(MooseClient:GetClientGroupID() + 10000000)
+        --                        else
+        --                        end
+        --
+        --                        if client_performing_sh == nil then
+        --                            client_performing_sh = USERFLAG:New(MooseClient:GetClientGroupID() + 100000000)
+        --                        else
+        --                        end
+        --
+        --                        if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
+        --                            -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
+        --                            trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
+        --                            local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
+        --                            HypeMan.sendBotMessage(sh_message_to_discord)
+        --                            Play_SH_Sound:ToAll()
+        --                            client_in_zone_flag:Set(1)
+        --                            client_performing_sh:Set(1)
+        --                            timer.scheduleFunction(resetFlag, {}, timer.getTime() + 10)
+        --                        else
+        --                        end
+        --
+        --                          --trigger.action.outText('ForEachClientInZone: Client name is '..clientData.clientName , 5)
+        --                          --trigger.action.outText('ForEachClientInZone: Client fuel1 is '..clientData.clientFuel1 , 5)
+        --
+        --                    end
+        --            )
+        --        end,
+        --        {},
+        --        2,
+        --        1
+        --)
 
-                    (AIRBOSSArray[compteur].BlueCVNClients):ForEachClientInZone( AIRBOSSArray[compteur].CVN_GROUPZone,
-                            function( MooseClient )
-
-                                local function resetFlag()
-                                    --trigger.action.setUserFlag(555, 0)
-                                    --trigger.action.outText('RESET SH Pass FLAG)', 5 )
-                                    client_in_zone_flag:Set(0)
-                                end
-
-                                local player_velocity = MooseClient:GetVelocityKNOTS()
-                                local player_name = MooseClient:GetPlayerName()
-                                local player_alt = MooseClient:GetAltitude()
-                                local player_type = MooseClient:GetTypeName()
-
-                                player_alt_feet = player_alt * 3.28
-                                player_alt_feet = player_alt_feet/10
-                                player_alt_feet = math.floor(player_alt_feet)*10
-
-                                player_velocity_round = player_velocity/10
-                                player_velocity_round = math.floor(player_velocity_round)*10
-
-                                --client_fuel1 = MooseClient:GetFuel() -- Get the current amount of fuel every 5 seconds
-                                --trigger.action.outText(player_name..' has '..client_fuel1.. ' % of fuel onboard', 10)
-                                --local test = 'Test parameter'
-                                --[[
-                                clientData.clientName = MooseClient:GetPlayerName()
-                                clientData.clientFuel1 = MooseClient:GetFuel()
-                                clientData.clientFuel2 = nil
-                                clientData.in_air_bool = MooseClient:InAir()
-                                clientData.alt = MooseClient:GetAltitude()
-                                clientData.unitType = MooseClient:GetTypeName()
-                                clientData.start_time = nil
-                                clientData.stop_time = nil
-                                clientData.clientID = MooseClient:GetClientGroupID()
-                                clientData.fuelDif = nil
-                                ]]
-                                local Play_SH_Sound = USERSOUND:New( "AIRBOSS/Airboss Soundfiles/GreatBallsOfFire.ogg" )
-                                --trigger.action.outText(player_name..' altitude is '..player_alt, 5)
-                                --trigger.action.outText(player_name..' speed is '..player_velocity, 5)
-                                if client_in_zone_flag == nil then
-                                    client_in_zone_flag = USERFLAG:New(MooseClient:GetClientGroupID() + 10000000)
-                                else
-                                end
-
-                                if client_performing_sh == nil then
-                                    client_performing_sh = USERFLAG:New(MooseClient:GetClientGroupID() + 100000000)
-                                else
-                                end
-
-                                if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
-                                    -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
-                                    trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
-                                    local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
-                                    HypeMan.sendBotMessage(sh_message_to_discord)
-                                    Play_SH_Sound:ToAll()
-                                    client_in_zone_flag:Set(1)
-                                    client_performing_sh:Set(1)
-                                    timer.scheduleFunction(resetFlag, {}, timer.getTime() + 10)
-                                else
-                                end
-
-                                --trigger.action.outText('ForEachClientInZone: Client name is '..clientData.clientName , 5)
-                                --trigger.action.outText('ForEachClientInZone: Client fuel1 is '..clientData.clientFuel1 , 5)
-
-                                --timer.scheduleFunction(send_fuel_amount_5_sec_later,clientData, timer.getTime() + 5) -- run function to compare fuel 5 seconds later
-
-                                --send_fuel_amount_5_sec_later(clientData)
-                            end
-                    )
-                end,
-                {},
-                2,
-                1
-        )
-
-
-        if airbossconfig.event_duration_minutes then
-            if ((timer.getAbsTime() + UTILS.Round(airbossconfig.event_duration_minutes*60/2, 0)) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)) then
-                trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
-                AIRBOSSArray[compteur]:SetRecoveryCase(3)
-                AIRBOSSArray[compteur]:SetMaxSectionSize(1)
-            end
-            AIRBOSSArray[compteur]:AddRecoveryWindow(20, UTILS.Round(airbossconfig.event_duration_minutes*60/2, 0),
-                    AIRBOSSArray[compteur].defaultcase,
-                    airbossconfig.menurecovery.offset,
-                    airbossconfig.menurecovery.windondeck,
-                    airbossconfig.menurecovery.uturn
-            )
-        else
-            if ((timer.getAbsTime() + 25*60) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)) then
-                trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
-                AIRBOSSArray[compteur]:SetRecoveryCase(3)
-                AIRBOSSArray[compteur]:SetMaxSectionSize(1)
-            end
-            AIRBOSSArray[compteur]:AddRecoveryWindow(20, 25*60,
-                    AIRBOSSArray[compteur].defaultcase,
-                    airbossconfig.menurecovery.offset,
-                    airbossconfig.menurecovery.windondeck,
-                    airbossconfig.menurecovery.uturn
-            )
+        if ((timer.getAbsTime() + UTILS.Round(airbossconfig.event_duration_minutes*60/2, 0)) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)) then
+            trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
+            AIRBOSSArray[compteur]:SetRecoveryCase(3)
+            AIRBOSSArray[compteur]:SetMaxSectionSize(1)
         end
+        AIRBOSSArray[compteur]:AddRecoveryWindow(20, UTILS.Round(airbossconfig.event_duration_minutes*60/2, 0),
+                AIRBOSSArray[compteur].defaultcase,
+                airbossconfig.menurecovery.offset,
+                airbossconfig.menurecovery.windondeck,
+                airbossconfig.menurecovery.uturn
+        )
         trigger.action.outText('AIRBOSS scripts Loaded for unit '..airbossconfig.carriername, 10)
         timer.scheduleFunction(function()
             trigger.action.outText(	"<< If the AIRBOSS option does not appear in your F10 - Other Menu, try switching slots a few times and you will get the AIRBOSS message popups! Check the AIRBOSS documentation (link in briefing for more info) >>", 30)
@@ -480,7 +455,6 @@ for index, awacsconfig in ipairs(AwacsConfig) do
         env.info('creation AWACS : '.. awacsconfig.groupName..'...')
         local objAwacs = RECOVERYTANKER:New(UNIT:FindByName(awacsconfig.patternUnit), awacsconfig.groupName)
                                        :SetAWACS(true, true)
-                                       :SetTakeoffCold()
                                        :SetRespawnOnOff(awacsconfig.autorespawn)
                                        :SetLowFuelThreshold(awacsconfig.fuelwarninglevel)
                                        :SetAltitude(awacsconfig.altitude)
@@ -491,6 +465,12 @@ for index, awacsconfig in ipairs(AwacsConfig) do
                                        :SetRadio(awacsconfig.freq)
                                        :SetModex(awacsconfig.modex)
                                        :SetRacetrackDistances(awacsconfig.racetrack.front, awacsconfig.racetrack.back)
+        if (awacsconfig.airspawn) then
+            objAwacs:SetTakeoffAir()
+        else
+            objAwacs:SetTakeoffCold()
+
+        end
         if (awacsconfig.tacan) then
             objAwacs:SetTACAN(awacsconfig.tacan.channel , awacsconfig.tacan.morse)
         end
@@ -694,3 +674,42 @@ for index, capzoneconfig in ipairs(TrainingCAPConfig) do
         --CAPZoneArray[compteur]:Start()
     end
 end
+
+-- *****************************************************************************
+--                     **                    Random Air Traffic               **
+--                     *********************************************************
+RATArray = {}
+compteur = 0
+for index, ratconfig in ipairs(RATConfig) do
+    if ratconfig.enable == true then
+        compteur = compteur +1
+        for index_planegroup, planegroupconfig in ipairs(ratconfig.aircrafts_groupconfigs) do
+            if planegroupconfig.spawns > 0 then
+                local RATGroup = RAT:New(planegroupconfig.templatename)
+                RATGroup:SetDeparture(planegroupconfig.airbases_names.departure)
+                RATGroup:SetDestination(planegroupconfig.airbases_names.arrival)
+                RATGroup:TimeDestroyInactive(planegroupconfig.inactive_timer)
+                RATGroup:ATC_Messages(planegroupconfig.atcmessage_enable)
+                RATGroup:SetFLcruise(planegroupconfig.flightlevel)
+                RATGroup:SetEPLRS(true)
+                RATGroup:SetMaxCruiseSpeed(UTILS.Round(planegroupconfig.speed*1.852, 0))
+                if planegroupconfig.allow_immortal == true then
+                    RATGroup:Immortal()
+                end
+                if planegroupconfig.allow_invisible == true then
+                    RATGroup:Invisible()
+                end
+                RATArray[compteur] = RATGroup
+                RATArray[compteur]:Spawn(planegroupconfig.spawns)
+            end
+        end
+        timer.scheduleFunction(function()
+            trigger.action.outText('Random Air Traffic '..ratconfig.name..' is ENABLED...', 10)
+        end, nil, timer.getTime() + 8  )
+    else
+        timer.scheduleFunction(function()
+            trigger.action.outText('Random Air Traffic '..ratconfig.name..' is DISABLED', 10)
+        end, nil, timer.getTime() + 8)
+    end
+end
+
