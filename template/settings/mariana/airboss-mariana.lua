@@ -32,7 +32,7 @@ AirBossConfig = {
         menurecovery = {
             enable = true,
             duration = 30,
-            windondeck = 20,
+            windondeck = 25,
             offset = 0,
             uturn = false
         },
@@ -78,7 +78,7 @@ AirBossConfig = {
         menurecovery = {
             enable = true,
             duration = 30,
-            windondeck = 10,
+            windondeck = 15,
             offset = 0,
             uturn = false
         },

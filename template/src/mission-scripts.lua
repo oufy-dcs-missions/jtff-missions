@@ -618,11 +618,11 @@ for index, capzoneconfig in ipairs(TrainingCAPConfig) do
             SpawnGroup:OptionROE(ENUMS.ROE.OpenFireWeaponFree)
             SpawnGroup:OptionROT(ENUMS.ROT.EvadeFire)
             SpawnGroup:OptionRTBBingoFuel(false)
-            if math.random(0,100) > 50 then
-                SpawnGroup:OptionAAAttackRange(AI.Option.Air.val.MISSILE_ATTACK.MAX_RANGE)
-            else
-                SpawnGroup:OptionAAAttackRange(AI.Option.Air.val.MISSILE_ATTACK.HALF_WAY_RMAX_NEZ)
-            end
+            --if math.random(0,100) > 50 then
+            --    SpawnGroup:OptionAAAttackRange(AI.Option.Air.val.MISSILE_ATTACK.MAX_RANGE)
+            --else
+            --    SpawnGroup:OptionAAAttackRange(AI.Option.Air.val.MISSILE_ATTACK.HALF_WAY_RMAX_NEZ)
+            --end
             SpawnGroup:OptionRestrictBurner(false)
             SpawnGroup:OptionECM_OnlyLockByRadar()
             SpawnGroup:EnableEmission(true)
@@ -713,3 +713,53 @@ for index, ratconfig in ipairs(RATConfig) do
     end
 end
 
+
+-- *****************************************************************************
+--                     **                FoxZone Training                     **
+--                     *********************************************************
+FoxRangesArray = {}
+compteur = 0
+for index, foxzoneconfig in ipairs(FoxRangesConfig) do
+    if foxzoneconfig.enable == true then
+        compteur = compteur + 1
+        env.info('creation Fox Zone : '.. foxzoneconfig.name..'...')
+        local objFoxZone = FOX:New()
+        objFoxZone:SetExplosionPower(0.01)
+                  :SetExplosionDistance(100)
+                  :SetDefaultMissileDestruction(true)
+                  :SetDefaultLaunchAlerts(foxzoneconfig.missilemessages)
+                  :SetDefaultLaunchMarks(false)
+                  :SetDefaultMissileDestruction(true)
+        if foxzoneconfig.launchZoneGroupName then
+            objFoxZone.objLaunchZone = ZONE_POLYGON:New(
+                    'FOX_LAUNCH_ZONE_'..foxzoneconfig.name,
+                    GROUP:FindByName(foxzoneconfig.launchZoneGroupName))
+            objFoxZone:AddLaunchZone(objFoxZone.objLaunchZone)
+            env.info('Fox Zone : Launch zone Polygon created : '.. objFoxZone.objLaunchZone:GetName() ..'...')
+        else
+            if foxzoneconfig.launchZoneName then
+                objFoxZone.objLaunchZone = ZONE:New(foxzoneconfig.launchZoneName)
+                objFoxZone:AddLaunchZone(objFoxZone.objLaunchZone)
+            end
+        end
+        if foxzoneconfig.launchZoneGroupName then
+            objFoxZone.objSafeZone = ZONE_POLYGON:New(
+                    'FOX_SAFE_ZONE_'..foxzoneconfig.name,
+                    GROUP:FindByName(foxzoneconfig.safeZoneGroupName))
+            objFoxZone:AddSafeZone(objFoxZone.objSafeZone)
+            env.info('Fox Zone : Safe zone Polygon created : '.. objFoxZone.objSafeZone:GetName() ..'...')
+        else
+            if foxzoneconfig.safeZoneName then
+                objFoxZone.objSafeZone = ZONE:New(foxzoneconfig.safeZoneName)
+                objFoxZone:AddSafeZone(objFoxZone.objSafeZone)
+            end
+        end
+        if foxzoneconfig.debug then
+            objFoxZone:SetDebugOn()
+        end
+        objFoxZone.menudisabled = false
+        objFoxZone.customconfig = foxzoneconfig
+        FoxRangesArray[compteur] = objFoxZone
+        FoxRangesArray[compteur]:Start()
+    end
+end

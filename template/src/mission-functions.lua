@@ -45,11 +45,14 @@ function resetRecoveryTanker(recoveryTankerObject)
     end
 end
 function startCapZone(objCAPZone)
-    AI_A2A_CAP:New2(
-            objCAPZone.objSpawn:SpawnInZone(ZONE_POLYGON:New(
-                    'PATROLZONE_'..(objCAPZone.customconfig.name),
-                    GROUP:FindByName(objCAPZone.customconfig.patrolZoneGroupName)
-            ),
+    local objPolygonEngageZone = ZONE_POLYGON:New('ENGAGE_ZONE_'..(objCAPZone.customconfig.name),
+            GROUP:FindByName(objCAPZone.customconfig.engageZoneGroupName))
+    local objPolygonPatrolZone = ZONE_POLYGON:New(
+            'PATROLZONE_'..(objCAPZone.customconfig.name),
+            GROUP:FindByName(objCAPZone.customconfig.patrolZoneGroupName)
+    )
+    local objCAP = AI_A2A_CAP:New2(
+            objCAPZone.objSpawn:SpawnInZone(objPolygonPatrolZone,
                     true
             ),
             UTILS.Round(objCAPZone.customconfig.capParameters.minEngageSpeed*1.852,0),
@@ -57,23 +60,15 @@ function startCapZone(objCAPZone)
             UTILS.Round(objCAPZone.customconfig.capParameters.engageFloor*0.3048,0),
             UTILS.Round(objCAPZone.customconfig.capParameters.engageCeiling*0.3048,0),
             AI.Task.AltitudeType.BARO,
-            ZONE_POLYGON:New(
-                    'PATROLZONE_'..(objCAPZone.customconfig.name),
-                    GROUP:FindByName(objCAPZone.customconfig.patrolZoneGroupName)
-            ),
+            objPolygonPatrolZone,
             UTILS.Round(objCAPZone.customconfig.capParameters.minPatrolSpeed*1.852,0),
             UTILS.Round(objCAPZone.customconfig.capParameters.maxPatrolSpeed*1.852,0),
             UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
             UTILS.Round(objCAPZone.customconfig.capParameters.patrolCeiling*0.3048,0),
             AI.Task.AltitudeType.BARO
     )
-            :SetEngageZone(ZONE_POLYGON:New('ENGAGE_ZONE_'..(objCAPZone.customconfig.name),
-            GROUP:FindByName(objCAPZone.customconfig.engageZoneGroupName)))
-            :SetDetectionZone(ZONE_POLYGON:New('ENGAGE_ZONE_'..(objCAPZone.customconfig.name),
-            GROUP:FindByName(objCAPZone.customconfig.engageZoneGroupName)))
-            :SetDetectionOn()
-            :SetDetectionActivated()
-            :Patrol()
+    objCAP:SetEngageZone(objPolygonEngageZone)
+    objCAP:Patrol()
     --local objAiCapZone = AI_CAP_ZONE:New(
     --        objCAPZone.objPatrolZone,
     --        UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
