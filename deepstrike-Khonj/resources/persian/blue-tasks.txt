@@ -1,0 +1,30 @@
+NavalOps :
+  - Roosevelt:
+    TCN:		71X
+	ICLS:		11
+	freq:		Black1
+	Airboss:
+	  Marshall:	Black4
+	  LSO:		Black3
+
+Tankers :
+  - Shell: S3-Viking
+    TCN:		14Y
+	freq:		Olive2
+
+  - Texaco: KC135-MPRS
+    TCN:		15Y
+	freq:		Olive1
+
+  - Arco: KC135
+    TCN:		16Y
+	freq:		Olive3
+
+AWACS :
+  - Wizard: E2-C
+    TCN:		17Y
+	freq:		Silver1
+
+  - Overlord: E3-A
+    TCN:		18Y
+	freq:		Silver2

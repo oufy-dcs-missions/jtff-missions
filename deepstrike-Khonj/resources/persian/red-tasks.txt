@@ -1,0 +1,11 @@
+Tankers :
+  - Texaco: KC135-MPRS
+    TCN:		101Y
+	freq:		Olive4
+
+
+AWACS :
+  - Darkstar: A-50
+    TCN:		100Y
+	freq:		Silver4
+
